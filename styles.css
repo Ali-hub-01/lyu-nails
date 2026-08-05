@@ -490,28 +490,28 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   text-transform: uppercase;
   letter-spacing: 0.04em;
   white-space: nowrap;
-  animation: durationGlow 2.4s ease-in-out infinite;
+  animation: durationGlow 1.15s ease-in-out infinite;
 }
 /* Пробегающий блик по бейджу */
 .course__duration::after {
   content: "";
   position: absolute;
   top: 0;
-  left: -75%;
-  width: 55%;
+  left: -80%;
+  width: 65%;
   height: 100%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.9), transparent);
   transform: skewX(-20deg);
-  animation: durationShine 3s ease-in-out infinite;
+  animation: durationShine 1.5s ease-in-out infinite;
 }
-/* Пульсирующее свечение вокруг числа */
+/* Пульсирующее свечение вокруг числа (ярче и быстрее) */
 @keyframes durationGlow {
-  0%, 100% { box-shadow: 0 6px 16px rgba(31, 138, 138, 0.3); }
-  50% { box-shadow: 0 6px 22px rgba(44, 177, 177, 0.8), 0 0 0 4px rgba(44, 177, 177, 0.18); }
+  0%, 100% { box-shadow: 0 4px 14px rgba(44, 177, 177, 0.5), 0 0 0 0 rgba(44, 177, 177, 0.35); }
+  50% { box-shadow: 0 6px 30px rgba(44, 177, 177, 1), 0 0 0 7px rgba(44, 177, 177, 0.3); }
 }
 @keyframes durationShine {
-  0% { left: -75%; }
-  60%, 100% { left: 140%; }
+  0% { left: -80%; }
+  55%, 100% { left: 150%; }
 }
 
 .course__actions { display: flex; gap: 10px; flex-wrap: wrap; }
