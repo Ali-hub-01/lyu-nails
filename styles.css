@@ -780,6 +780,18 @@ a.contact-card:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba
 }
 .reveal.is-visible { opacity: 1; transform: none; }
 
+/* Галерея: фото эффектно "всплывают" — pop с пружинным отскоком (заметно) */
+.gallery__item.reveal {
+  opacity: 0;
+  transform: scale(0.8) translateY(30px);
+  transition: opacity 0.5s ease, transform 0.62s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, opacity;
+}
+.gallery__item.reveal.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
 /* Каскадная задержка для сеток */
 .courses__grid .reveal:nth-child(2),
 .gallery__grid .reveal:nth-child(3n + 2),
@@ -797,7 +809,8 @@ a.contact-card:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .reveal { opacity: 1; transform: none; }
+  .reveal,
+  .gallery__item.reveal { opacity: 1 !important; transform: none !important; }
 }
 
 /* ============================================================
