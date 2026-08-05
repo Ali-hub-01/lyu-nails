@@ -478,6 +478,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   color: var(--teal-700);
 }
 .course__duration {
+  position: relative;
+  overflow: hidden;
   display: inline-block;
   font-size: 15px;
   font-weight: 800;
@@ -488,7 +490,28 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   text-transform: uppercase;
   letter-spacing: 0.04em;
   white-space: nowrap;
-  box-shadow: 0 6px 16px rgba(31, 138, 138, 0.28);
+  animation: durationGlow 2.4s ease-in-out infinite;
+}
+/* Пробегающий блик по бейджу */
+.course__duration::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: skewX(-20deg);
+  animation: durationShine 3s ease-in-out infinite;
+}
+/* Пульсирующее свечение вокруг числа */
+@keyframes durationGlow {
+  0%, 100% { box-shadow: 0 6px 16px rgba(31, 138, 138, 0.3); }
+  50% { box-shadow: 0 6px 22px rgba(44, 177, 177, 0.8), 0 0 0 4px rgba(44, 177, 177, 0.18); }
+}
+@keyframes durationShine {
+  0% { left: -75%; }
+  60%, 100% { left: 140%; }
 }
 
 .course__actions { display: flex; gap: 10px; flex-wrap: wrap; }
