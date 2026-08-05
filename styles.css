@@ -1,6 +1,6 @@
 /* ============================================================
-   LYU-NAILS — школа-студия ногтевого сервиса, Алматы
-   Концепция: «Бирюзовая орхидея» — премиально, женственно, чисто
+   LYU-NAILS - школа-студия ногтевого сервиса, Алматы
+   Концепция: «Бирюзовая орхидея» - премиально, женственно, чисто
    Палитра: teal #1F8A8A / #2CB1B1, свет #E7F4F3, серый #8FA3A6 /
    #EEF2F2, графит #232B2C, белый
    ============================================================ */
@@ -272,7 +272,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   color: var(--teal-500);
 }
 
-/* Фото Юлии — форма арки, как силуэт ногтя */
+/* Фото Юлии - форма арки, как силуэт ногтя */
 .hero__visual { position: relative; }
 
 .hero__photo-frame {
@@ -488,7 +488,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .course__actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .course__actions .btn { flex: 1; padding: 12px 16px; font-size: 14px; white-space: nowrap; }
 
-/* Флагманский курс — во всю ширину, тёмный премиум */
+/* Флагманский курс - во всю ширину, тёмный премиум */
 .course--flagship {
   grid-column: 1 / -1;
   background:

@@ -1,5 +1,5 @@
 /* ============================================================
-   LYU-NAILS — скрипты лэндинга (vanilla JS, без зависимостей)
+   LYU-NAILS - скрипты лэндинга (vanilla JS, без зависимостей)
    ============================================================ */
 'use strict';
 
@@ -75,7 +75,7 @@ function animateCounter(el) {
 
   function tick(now) {
     const progress = Math.min((now - start) / duration, 1);
-    // easeOutCubic — быстро в начале, мягко в конце
+    // easeOutCubic - быстро в начале, мягко в конце
     const eased = 1 - Math.pow(1 - progress, 3);
     el.textContent = Math.round(target * eased).toLocaleString('ru-RU');
     if (progress < 1) requestAnimationFrame(tick);
@@ -211,7 +211,7 @@ function validateField(input) {
   if (!value) {
     message = 'Пожалуйста, заполните это поле';
   } else if (input.type === 'tel') {
-    // Достаточно 10+ цифр — принимаем любые форматы записи
+    // Достаточно 10+ цифр - принимаем любые форматы записи
     const digits = value.replace(/\D/g, '');
     if (digits.length < 10) message = 'Укажите номер полностью, например +7 702 000 00 00';
   } else if (input.name === 'name' && value.length < 2) {
@@ -233,7 +233,7 @@ bookingForm.addEventListener('submit', (e) => {
   });
   if (!valid) return;
 
-  /* Берём поля через elements — свойство form.name занято атрибутом формы */
+  /* Берём поля через elements - свойство form.name занято атрибутом формы */
   const name = bookingForm.elements['name'].value.trim();
   const phone = bookingForm.elements['phone'].value.trim();
   const course = bookingForm.elements['course'].value;
