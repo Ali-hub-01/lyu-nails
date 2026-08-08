@@ -243,6 +243,15 @@ bookingForm.addEventListener('submit', (e) => {
     'Меня зовут: ' + name + '\n' +
     'Телефон: ' + phone;
 
+  /* Конверсия Google Ads: "Отправка формы для потенциальных клиентов" */
+  if (typeof gtag === 'function') {
+    gtag('event', 'conversion', {
+      'send_to': 'AW-18375998502/W4o_CNe8iN4cEKb4rbpE',
+      'value': 1.0,
+      'currency': 'USD'
+    });
+  }
+
   window.open(
     'https://wa.me/' + WHATSAPP_PHONE + '?text=' + encodeURIComponent(text),
     '_blank',
@@ -256,4 +265,21 @@ bookingForm.querySelectorAll('.field__input').forEach((input) => {
     input.classList.remove('is-invalid');
     input.closest('.field').querySelector('.field__error').textContent = '';
   });
+});
+
+/* ============================================================
+   Конверсия Google Ads: "Контакт" - клики по WhatsApp
+   Делегированный слушатель ловит все ссылки wa.me (кнопки курсов,
+   контакты, плавающая кнопка) - и текущие, и добавленные позже.
+   ============================================================ */
+document.addEventListener('click', (e) => {
+  const waLink = e.target.closest('a[href*="wa.me"]');
+  if (!waLink) return;
+  if (typeof gtag === 'function') {
+    gtag('event', 'conversion', {
+      'send_to': 'AW-18375998502/wQznCOX3mN4cEKb4rbpE',
+      'value': 1.0,
+      'currency': 'USD'
+    });
+  }
 });

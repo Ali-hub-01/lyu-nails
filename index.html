@@ -4,6 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Google тег (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18375998502"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-18375998502');
+
+    /* Конверсия "Интерактивные номера телефонов" - вызывается по клику на телефон */
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') { window.location = url; }
+      };
+      gtag('event', 'conversion', {
+        'send_to': 'AW-18375998502/ViW2CLm2iN4cEKb4rbpE',
+        'value': 1.0,
+        'currency': 'USD',
+        'event_callback': callback
+      });
+      return false;
+    }
+  </script>
+
   <!-- SEO -->
   <title>LYU-NAILS - школа маникюра и наращивания в Алматы | Курсы Юлии Людининой</title>
   <meta name="description" content="Школа-студия LYU-NAILS в Алматы: курсы маникюра, педикюра и наращивания ногтей с нуля до топ-мастера. Преподаватель - международный судья Юлия Людинина, 3000+ выпускников. Запишитесь в WhatsApp!">
@@ -34,7 +57,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
 
@@ -393,6 +416,14 @@
             <span class="contact-card__value">+7 702 666 6135</span>
           </a>
 
+          <a class="contact-card reveal" href="tel:+77026666135" onclick="return gtag_report_conversion('tel:+77026666135');">
+            <span class="contact-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.6c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.4 2.2Z"/></svg>
+            </span>
+            <span class="contact-card__label">Позвонить</span>
+            <span class="contact-card__value">+7 702 666 6135</span>
+          </a>
+
           <a class="contact-card reveal" href="https://www.instagram.com/yuliya_lyudinina/" target="_blank" rel="noopener">
             <span class="contact-card__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7Zm0 2h10c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3Zm5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm4.5-2.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></svg>
@@ -446,6 +477,6 @@
     <button class="lightbox__arrow lightbox__arrow--next" id="lightboxNext" aria-label="Следующее фото">&#8250;</button>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
