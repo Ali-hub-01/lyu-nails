@@ -916,3 +916,41 @@ a.contact-card:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba
   .hero__card strong { font-size: 19px; }
   .course__actions .btn { flex-basis: 100%; }
 }
+
+/* ---------- Акция: старая/новая цена + бейдж ---------- */
+.course__price .course__old {
+  font-family: var(--font-body);
+  font-size: 0.6em;
+  font-weight: 500;
+  color: var(--grey-400);
+  text-decoration: line-through;
+  margin-right: 8px;
+}
+.course__off {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #EA6B6B;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  vertical-align: middle;
+}
+.course--flagship .course__price .course__old { color: rgba(255, 255, 255, 0.6); }
+
+/* ---------- Kaspi баннер ---------- */
+.kaspi-note {
+  max-width: 640px;
+  margin: 2px auto 30px;
+  text-align: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: var(--teal-100);
+  color: var(--teal-700);
+  font-weight: 600;
+  font-size: 15px;
+}
+.kaspi-note b { font-weight: 800; }
