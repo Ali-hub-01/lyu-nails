@@ -283,3 +283,18 @@ document.addEventListener('click', (e) => {
     });
   }
 });
+
+/* ============================================================
+   Конверсия Google Ads: "Instagram - переход" - клики по Instagram
+   ============================================================ */
+document.addEventListener('click', (e) => {
+  const igLink = e.target.closest('a[href*="instagram.com"]');
+  if (!igLink) return;
+  if (typeof gtag === 'function') {
+    gtag('event', 'conversion', {
+      'send_to': 'AW-18375998502/qo50CJPh_OIcEKb4rbpE',
+      'value': 1.0,
+      'currency': 'USD'
+    });
+  }
+});
