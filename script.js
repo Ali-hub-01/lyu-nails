@@ -244,13 +244,7 @@ bookingForm.addEventListener('submit', (e) => {
     'Телефон: ' + phone;
 
   /* Конверсия Google Ads: "Отправка формы для потенциальных клиентов" */
-  if (typeof gtag === 'function') {
-    gtag('event', 'conversion', {
-      'send_to': 'AW-18375998502/W4o_CNe8iN4cEKb4rbpE',
-      'value': 1.0,
-      'currency': 'USD'
-    });
-  }
+  fireConversion('AW-18375998502/W4o_CNe8iN4cEKb4rbpE', 'form');
 
   window.open(
     'https://wa.me/' + WHATSAPP_PHONE + '?text=' + encodeURIComponent(text),
@@ -268,33 +262,37 @@ bookingForm.querySelectorAll('.field__input').forEach((input) => {
 });
 
 /* ============================================================
-   Конверсия Google Ads: "Контакт" - клики по WhatsApp
-   Делегированный слушатель ловит все ссылки wa.me (кнопки курсов,
-   контакты, плавающая кнопка) - и текущие, и добавленные позже.
+   Google Ads: конверсии по действиям (телефон, WhatsApp, Instagram, форма).
+   Дедуп (1 раз за сессию) + анти-бот: боты грузят страницу и прокликивают
+   ссылки без единого человеческого жеста, такие клики не считаем.
    ============================================================ */
-document.addEventListener('click', (e) => {
-  const waLink = e.target.closest('a[href*="wa.me"]');
-  if (!waLink) return;
-  if (typeof gtag === 'function') {
-    gtag('event', 'conversion', {
-      'send_to': 'AW-18375998502/wQznCOX3mN4cEKb4rbpE',
-      'value': 1.0,
-      'currency': 'USD'
-    });
-  }
+var lyuHumanSeen = false;
+['pointermove', 'pointerdown', 'touchstart', 'scroll', 'keydown', 'wheel'].forEach(function (ev) {
+  window.addEventListener(ev, function () { lyuHumanSeen = true; }, { once: true, passive: true });
 });
+function lyuIsBot() { return !!navigator.webdriver || !lyuHumanSeen; }
 
-/* ============================================================
-   Конверсия Google Ads: "Instagram - переход" - клики по Instagram
-   ============================================================ */
-document.addEventListener('click', (e) => {
-  const igLink = e.target.closest('a[href*="instagram.com"]');
-  if (!igLink) return;
-  if (typeof gtag === 'function') {
-    gtag('event', 'conversion', {
-      'send_to': 'AW-18375998502/qo50CJPh_OIcEKb4rbpE',
-      'value': 1.0,
-      'currency': 'USD'
-    });
+function fireConversion(sendTo, key) {
+  if (typeof gtag !== 'function') return;
+  if (lyuIsBot()) return;
+  try {
+    var k = 'lyu_conv_' + key;
+    if (sessionStorage.getItem(k)) return;   // уже отправляли в этой сессии
+    sessionStorage.setItem(k, '1');
+  } catch (e) { /* приватный режим */ }
+  gtag('event', 'conversion', { 'send_to': sendTo, 'value': 1.0, 'currency': 'USD' });
+}
+
+document.addEventListener('click', function (e) {
+  if (!e.isTrusted) return;                   // синтетический клик бота, игнор
+  var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me"], a[href*="instagram.com"]');
+  if (!a) return;
+  var href = a.getAttribute('href') || '';
+  if (href.indexOf('tel:') === 0) {
+    fireConversion('AW-18375998502/ViW2CLm2iN4cEKb4rbpE', 'tel');       // Интерактивные номера телефонов
+  } else if (href.indexOf('wa.me') !== -1) {
+    fireConversion('AW-18375998502/wQznCOX3mN4cEKb4rbpE', 'wa');        // Контакт (WhatsApp)
+  } else if (href.indexOf('instagram.com') !== -1) {
+    fireConversion('AW-18375998502/qo50CJPh_OIcEKb4rbpE', 'ig');        // Instagram, переход
   }
 });
