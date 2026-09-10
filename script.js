@@ -244,7 +244,7 @@ bookingForm.addEventListener('submit', (e) => {
     'Телефон: ' + phone;
 
   /* Конверсия Google Ads: "Отправка формы для потенциальных клиентов" */
-  fireConversion('AW-18375998502/W4o_CNe8iN4cEKb4rbpE', 'form');
+  fireConversion('AW-18415302041/7rV2COjgnfMcEJnrjM1E', 'form');
 
   window.open(
     'https://wa.me/' + WHATSAPP_PHONE + '?text=' + encodeURIComponent(text),
@@ -285,14 +285,12 @@ function fireConversion(sendTo, key) {
 
 document.addEventListener('click', function (e) {
   if (!e.isTrusted) return;                   // синтетический клик бота, игнор
-  var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me"], a[href*="instagram.com"]');
+  var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me"]');
   if (!a) return;
   var href = a.getAttribute('href') || '';
   if (href.indexOf('tel:') === 0) {
-    fireConversion('AW-18375998502/ViW2CLm2iN4cEKb4rbpE', 'tel');       // Интерактивные номера телефонов
+    fireConversion('AW-18415302041/uMWFCJWWlfMcEJnrjM1E', 'tel');       // Интерактивные номера телефонов
   } else if (href.indexOf('wa.me') !== -1) {
-    fireConversion('AW-18375998502/wQznCOX3mN4cEKb4rbpE', 'wa');        // Контакт (WhatsApp)
-  } else if (href.indexOf('instagram.com') !== -1) {
-    fireConversion('AW-18375998502/qo50CJPh_OIcEKb4rbpE', 'ig');        // Instagram, переход
+    fireConversion('AW-18415302041/Zr2UCJDfnfMcEJnrjM1E', 'wa');        // Контакт (WhatsApp)
   }
 });
