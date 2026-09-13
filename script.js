@@ -12,6 +12,36 @@ window.addEventListener('load', () => {
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ============================================================
+   Прелоадер: звёздная заставка. Скрываем по load,
+   фолбэк-таймаут 3 c - страница никогда не «зависнет» под оверлеем.
+   ============================================================ */
+(function () {
+  const preloader = document.getElementById('preloader');
+  if (!preloader) {
+    document.body.classList.remove('is-loading');
+    return;
+  }
+
+  let preloaderHidden = false;
+  function hidePreloader() {
+    if (preloaderHidden) return;
+    preloaderHidden = true;
+    preloader.classList.add('is-done');
+    document.body.classList.remove('is-loading'); // разблокируем скролл
+    const remove = () => { preloader.hidden = true; };
+    prefersReducedMotion ? remove() : setTimeout(remove, 700);
+  }
+
+  if (prefersReducedMotion) {
+    // Минимум движения: без мельтешащих звёзд, скрываем сразу
+    hidePreloader();
+  } else {
+    window.addEventListener('load', () => setTimeout(hidePreloader, 450));
+    setTimeout(hidePreloader, 3000); // фолбэк, если load задержался
+  }
+})();
+
+/* ============================================================
    Шапка: тень при скролле
    ============================================================ */
 const header = document.querySelector('.header');
@@ -294,3 +324,95 @@ document.addEventListener('click', function (e) {
     fireConversion('AW-18415302041/Zr2UCJDfnfMcEJnrjM1E', 'wa');        // Контакт (WhatsApp)
   }
 });
+
+/* ============================================================
+   Фоновые боке-огоньки в секциях [data-bokeh]
+   (CSS-анимации; JS лишь расставляет и ставит на паузу вне экрана)
+   ============================================================ */
+(function () {
+  if (prefersReducedMotion) return;
+
+  const layers = document.querySelectorAll('[data-bokeh]');
+  const scenes = document.querySelectorAll('.anim-scene');
+  if (!layers.length && !scenes.length) return;
+
+  const isMobile = window.matchMedia('(max-width: 860px)').matches;
+  const colors = [
+    'rgba(44, 177, 177, 0.9)',   // teal-500
+    'rgba(127, 212, 212, 0.9)',  // светлая бирюза
+    'rgba(255, 255, 255, 0.85)', // белый
+    'rgba(232, 199, 125, 0.8)'   // мягкое золото
+  ];
+  const rand = (min, max) => min + Math.random() * (max - min);
+
+  layers.forEach((layer) => {
+    let count = parseInt(layer.dataset.bokeh, 10) || 10;
+    if (isMobile) count = Math.ceil(count / 2); // на мобилке облегчаем
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('span');
+      dot.className = 'bokeh';
+      const size = rand(6, isMobile ? 16 : 26);
+      dot.style.setProperty('--x', rand(2, 96) + '%');
+      dot.style.setProperty('--y', rand(4, 92) + '%');
+      dot.style.setProperty('--s', size.toFixed(1) + 'px');
+      dot.style.setProperty('--c', colors[i % colors.length]);
+      dot.style.setProperty('--o', rand(0.2, 0.5).toFixed(2));
+      dot.style.setProperty('--dx', rand(-38, 38).toFixed(0) + 'px');
+      dot.style.setProperty('--dy', rand(16, 42).toFixed(0) + 'px');
+      dot.style.setProperty('--d', rand(9, 17).toFixed(1) + 's');
+      dot.style.setProperty('--dl', (-rand(0, 12)).toFixed(1) + 's');
+      frag.appendChild(dot);
+    }
+    layer.appendChild(frag);
+  });
+
+  /* Пауза фоновых анимаций у секций вне экрана */
+  if ('IntersectionObserver' in window) {
+    const sceneObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle('in-view', entry.isIntersecting);
+        });
+      },
+      { rootMargin: '120px 0px 120px 0px' }
+    );
+    scenes.forEach((scene) => sceneObserver.observe(scene));
+  } else {
+    scenes.forEach((scene) => scene.classList.add('in-view'));
+  }
+})();
+
+/* ============================================================
+   Лёгкий параллакс декоративных элементов [data-parallax]
+   (rAF, только transform; при reduced-motion не запускается)
+   ============================================================ */
+(function () {
+  if (prefersReducedMotion) return;
+
+  const parallaxEls = document.querySelectorAll('[data-parallax]');
+  if (!parallaxEls.length) return;
+
+  let ticking = false;
+
+  function updateParallax() {
+    ticking = false;
+    const vh = window.innerHeight;
+    parallaxEls.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.bottom < -160 || rect.top > vh + 160) return; // вне экрана - не трогаем
+      const speed = parseFloat(el.dataset.parallax) || 0.12;
+      const offset = (rect.top + rect.height / 2 - vh / 2) * speed;
+      el.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
+    });
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(updateParallax);
+    }
+  }, { passive: true });
+
+  updateParallax();
+})();

@@ -57,9 +57,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=6">
+  <noscript><style>.preloader { display: none; } body.is-loading { overflow: auto; }</style></noscript>
 </head>
-<body>
+<body class="is-loading">
+
+  <!-- ======================= ПРЕЛОАДЕР ======================= -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader__stars">
+      <span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span><span class="pl-star">&#10022;</span>
+    </div>
+    <div class="preloader__logo">
+      <span class="preloader__name">LYU-NAILS</span>
+      <span class="preloader__tag">studio &amp; school</span>
+    </div>
+  </div>
 
   <!-- ======================= ШАПКА ======================= -->
   <header class="header" id="top">
@@ -71,6 +83,7 @@
       <nav class="nav" id="nav" aria-label="Основная навигация">
         <a href="#about" class="nav__link">О мастере</a>
         <a href="#courses" class="nav__link">Курсы</a>
+        <a href="#online" class="nav__link">Онлайн</a>
         <a href="#gallery" class="nav__link">Работы</a>
         <a href="#booking" class="nav__link">Запись</a>
         <a href="#contacts" class="nav__link">Контакты</a>
@@ -86,9 +99,10 @@
   <main>
 
     <!-- ======================= HERO ======================= -->
-    <section class="hero" id="hero">
+    <section class="hero anim-scene" id="hero">
       <div class="hero__glow hero__glow--1" aria-hidden="true"></div>
       <div class="hero__glow hero__glow--2" aria-hidden="true"></div>
+      <div class="bokeh-layer" data-bokeh="12" aria-hidden="true"></div>
 
       <div class="container hero__inner">
         <div class="hero__content">
@@ -150,6 +164,12 @@
 
     <!-- ======================= О МАСТЕРЕ ======================= -->
     <section class="about section" id="about">
+      <div class="deco deco--about" data-parallax="0.12" aria-hidden="true">
+        <svg viewBox="0 0 120 120" width="200" height="200"><path d="M60 8 C 94 26, 106 66, 60 112 C 14 66, 26 26, 60 8 Z" fill="rgba(44, 177, 177, 0.09)"/></svg>
+      </div>
+      <div class="deco deco--about2" data-parallax="-0.08" aria-hidden="true">
+        <svg viewBox="0 0 120 120" width="130" height="130"><path d="M60 8 C 94 26, 106 66, 60 112 C 14 66, 26 26, 60 8 Z" fill="rgba(143, 163, 166, 0.10)"/></svg>
+      </div>
       <div class="container about__inner">
         <div class="about__visual reveal">
           <div class="about__photo">
@@ -178,13 +198,14 @@
     </section>
 
     <!-- ======================= КУРСЫ ======================= -->
-    <section class="courses section" id="courses">
+    <section class="courses section anim-scene" id="courses">
+      <div class="bokeh-layer" data-bokeh="8" aria-hidden="true"></div>
       <div class="container">
-        <p class="section__eyebrow section__eyebrow--center reveal">Обучение</p>
-        <h2 class="section__title section__title--center reveal">Курсы школы</h2>
-        <p class="section__sub reveal">От нуля до топ-мастера. Каждый курс - практика на моделях, материалы включены, сертификат по окончании.</p>
+        <p class="section__eyebrow section__eyebrow--center reveal">Обучение в Алматы</p>
+        <h2 class="section__title section__title--center reveal">Очные курсы в студии</h2>
+        <p class="section__sub reveal">Занятия в студии в Алматы: от нуля до топ-мастера. Каждый курс - практика на моделях, материалы включены, сертификат по окончании.</p>
 
-        <p class="kaspi-note reveal">💳 Любой курс — <b>в рассрочку 0–0–12</b> через <b>Kaspi Red</b></p>
+        <p class="kaspi-note reveal">💳 Любой курс - <b>в рассрочку 0–0–12</b> через <b>Kaspi Red</b></p>
 
         <div class="courses__grid">
 
@@ -301,36 +322,57 @@
             </div>
           </article>
 
-          <!-- Онлайн-видеокурс (закрытый Telegram) -->
-          <article class="course reveal" id="course-online">
-            <div class="course__body">
-              <h3 class="course__name">Онлайн-видеокурс</h3>
-              <p class="course__desc">Закрытые видеоуроки от Юлии Людининой: техника, скорость, визуал и работа с клиентской базой. Учитесь из любого города в удобном темпе.</p>
-              <ul class="course__modules">
-                <li>Macro Combi и тонкое прочное укрепление</li>
-                <li>Опил квадрата и миндаля</li>
-                <li>Рисованный French и скоростная техника</li>
-                <li>Наращивание STRONG и «Чистый отпечаток»</li>
-                <li>Фото, визуал и клиентская база</li>
-              </ul>
-              <p class="course__note">Онлайн-доступ 24/7 · закрытый Telegram · новые уроки постоянно</p>
-            </div>
-            <div class="course__footer">
-              <div class="course__meta">
-                <span class="course__duration">Доступ <b>24/7 онлайн</b></span>
-              </div>
-              <div class="course__actions">
-                <a href="https://wa.me/77026666135?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BA%20%D0%BE%D0%BD%D0%BB%D0%B0%D0%B9%D0%BD-%D0%BA%D1%83%D1%80%D1%81%D1%83%20LYU%20%28%D0%B7%D0%B0%D0%BA%D1%80%D1%8B%D1%82%D1%8B%D0%B9%20%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%D0%BA%D1%83%D1%80%D1%81%29." class="btn btn--solid" target="_blank" rel="noopener">Получить доступ</a>
-              </div>
-            </div>
-          </article>
-
         </div>
+      </div>
+    </section>
+
+    <!-- ======================= ОНЛАЙН-КУРС (отдельный продукт) ======================= -->
+    <section class="online section anim-scene" id="online">
+      <div class="online__glow online__glow--1" aria-hidden="true"></div>
+      <div class="online__glow online__glow--2" aria-hidden="true"></div>
+      <div class="bokeh-layer" data-bokeh="16" aria-hidden="true"></div>
+
+      <div class="container">
+        <p class="section__eyebrow section__eyebrow--center online__eyebrow reveal">Отдельный продукт школы</p>
+        <h2 class="section__title section__title--center online__title reveal">Онлайн-курс</h2>
+        <p class="section__sub online__sub reveal">Учитесь у Юлии Людининой из любого города: закрытый Telegram-канал, доступ к урокам 24/7 и удобный темп без привязки к студии.</p>
+
+        <article class="online-card reveal" id="course-online">
+          <span class="online-card__badge">Онлайн-формат</span>
+
+          <div class="online-card__main">
+            <h3 class="online-card__name">Онлайн-видеокурс</h3>
+            <p class="online-card__desc">Закрытые видеоуроки от Юлии Людининой: техника, скорость, визуал и работа с клиентской базой. Учитесь из любого города в удобном темпе.</p>
+            <ul class="online-card__modules">
+              <li>Macro Combi и тонкое прочное укрепление</li>
+              <li>Опил квадрата и миндаля</li>
+              <li>Рисованный French и скоростная техника</li>
+              <li>Наращивание STRONG и «Чистый отпечаток»</li>
+              <li>Фото, визуал и клиентская база</li>
+            </ul>
+            <p class="online-card__note">Онлайн-доступ 24/7 · закрытый Telegram · новые уроки постоянно</p>
+          </div>
+
+          <aside class="online-card__side">
+            <span class="online-card__access">Доступ <b>24/7 онлайн</b></span>
+            <ul class="online-card__perks">
+              <li>Из любого города, без привязки к Алматы</li>
+              <li>Закрытый Telegram-канал с уроками</li>
+              <li>Смотрите в удобном темпе, пересматривайте</li>
+              <li>Новые уроки добавляются постоянно</li>
+            </ul>
+            <a href="https://wa.me/77026666135?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BA%20%D0%BE%D0%BD%D0%BB%D0%B0%D0%B9%D0%BD-%D0%BA%D1%83%D1%80%D1%81%D1%83%20LYU%20%28%D0%B7%D0%B0%D0%BA%D1%80%D1%8B%D1%82%D1%8B%D0%B9%20%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%D0%BA%D1%83%D1%80%D1%81%29." class="btn btn--solid btn--lg online-card__cta" target="_blank" rel="noopener">Получить доступ</a>
+          </aside>
+        </article>
       </div>
     </section>
 
     <!-- ======================= ГАЛЕРЕЯ ======================= -->
     <section class="gallery section" id="gallery">
+      <div class="soft-glow soft-glow--gallery" aria-hidden="true"></div>
+      <div class="deco deco--gallery" data-parallax="0.1" aria-hidden="true">
+        <svg viewBox="0 0 120 120" width="170" height="170"><path d="M60 8 C 94 26, 106 66, 60 112 C 14 66, 26 26, 60 8 Z" fill="rgba(44, 177, 177, 0.08)"/></svg>
+      </div>
       <div class="container">
         <p class="section__eyebrow section__eyebrow--center reveal">Портфолио</p>
         <h2 class="section__title section__title--center reveal">Работы школы</h2>
@@ -380,7 +422,8 @@
     </section>
 
     <!-- ======================= ЗАПИСЬ ======================= -->
-    <section class="booking section" id="booking">
+    <section class="booking section anim-scene" id="booking">
+      <div class="bokeh-layer" data-bokeh="10" aria-hidden="true"></div>
       <div class="container booking__inner">
         <div class="booking__content">
           <p class="section__eyebrow reveal">Запись на обучение</p>
@@ -411,6 +454,7 @@
               <option value="Наращивание на верхние формы (2 дня)">Наращивание на верхние формы - 2 дня</option>
               <option value="Архитектура (2 дня)">Архитектура - 2 дня</option>
               <option value="Повышение квалификации (1 день)">Повышение квалификации - 1 день</option>
+              <option value="Онлайн-видеокурс (доступ 24/7)">Онлайн-видеокурс - доступ 24/7</option>
             </select>
             <span class="field__error" aria-live="polite"></span>
           </div>
@@ -423,6 +467,7 @@
 
     <!-- ======================= КОНТАКТЫ ======================= -->
     <section class="contacts section" id="contacts">
+      <div class="soft-glow soft-glow--contacts" aria-hidden="true"></div>
       <div class="container">
         <p class="section__eyebrow section__eyebrow--center reveal">Контакты</p>
         <h2 class="section__title section__title--center reveal">Мы в Алматы</h2>
@@ -497,6 +542,6 @@
     <button class="lightbox__arrow lightbox__arrow--next" id="lightboxNext" aria-label="Следующее фото">&#8250;</button>
   </div>
 
-  <script src="script.js?v=4"></script>
+  <script src="script.js?v=6"></script>
 </body>
 </html>
