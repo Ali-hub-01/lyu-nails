@@ -451,23 +451,23 @@ document.addEventListener('click', function (e) {
   function spawn() {
     var fromLeft = Math.random() < 0.5;
     var angle = (Math.random() * 18 + 20) * Math.PI / 180; // 20-38 градусов вниз
-    var speed = Math.random() * 5 + 6;
+    var speed = Math.random() * 6 + 7;
     var col = COLORS[(Math.random() * COLORS.length) | 0];
     stars.push({
-      x: fromLeft ? -40 : W + 40,
-      y: Math.random() * H * 0.55,
+      x: fromLeft ? -60 : W + 60,
+      y: Math.random() * H * 0.6,
       vx: (fromLeft ? 1 : -1) * Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
-      len: Math.random() * 80 + 90,   // длина хвоста
-      life: 0, ttl: Math.random() * 60 + 90,
-      col: col, r: Math.random() * 1.2 + 1.3
+      len: Math.random() * 130 + 170,   // длина хвоста (крупнее)
+      life: 0, ttl: Math.random() * 60 + 100,
+      col: col, r: Math.random() * 2 + 2.6   // ярче/толще
     });
   }
 
   function draw(now) {
     if (running) {
       ctx.clearRect(0, 0, W, H);
-      if (now - lastSpawn > (Math.random() * 900 + 700)) { spawn(); lastSpawn = now; }
+      if (now - lastSpawn > (Math.random() * 520 + 360)) { spawn(); lastSpawn = now; }
       for (var i = stars.length - 1; i >= 0; i--) {
         var s = stars[i];
         s.x += s.vx; s.y += s.vy; s.life++;
@@ -477,20 +477,28 @@ document.addEventListener('click', function (e) {
         var ty = s.y - s.vy * (s.len / Math.hypot(s.vx, s.vy));
         var g = ctx.createLinearGradient(s.x, s.y, tx, ty);
         var c = s.col;
-        g.addColorStop(0, 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (0.9 * fade) + ')');
-        g.addColorStop(0.4, 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (0.35 * fade) + ')');
+        g.addColorStop(0, 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + fade + ')');
+        g.addColorStop(0.35, 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (0.55 * fade) + ')');
         g.addColorStop(1, 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',0)');
         ctx.strokeStyle = g;
-        ctx.lineWidth = s.r;
+        ctx.lineWidth = s.r * 1.6;
         ctx.lineCap = 'round';
         ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(tx, ty); ctx.stroke();
-        // головка звезды - яркая точка со свечением
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r * 1.6, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255,255,255,' + fade + ')';
+        // цветное свечение-ореол вокруг головки
         ctx.shadowColor = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + fade + ')';
-        ctx.shadowBlur = 14;
+        ctx.shadowBlur = 30;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r * 2.4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,' + fade + ')';
         ctx.fill();
+        // гламурная вспышка-звёздочка (4 луча)
+        var fl = s.r * 7 * fade;
+        ctx.strokeStyle = 'rgba(255,255,255,' + (0.85 * fade) + ')';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(s.x - fl, s.y); ctx.lineTo(s.x + fl, s.y);
+        ctx.moveTo(s.x, s.y - fl); ctx.lineTo(s.x, s.y + fl);
+        ctx.stroke();
         ctx.shadowBlur = 0;
         if (s.life > s.ttl || s.x < -80 || s.x > W + 80 || s.y > H + 80) stars.splice(i, 1);
       }

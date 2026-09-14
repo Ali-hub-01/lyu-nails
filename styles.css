@@ -1341,3 +1341,30 @@ body.is-loading { overflow: hidden; }
   .hero__shooting { display: none; }
   .online::before { animation: none !important; }
 }
+
+/* ===== Hero: 2 формата обучения (офлайн/онлайн) ===== */
+.hero__formats { margin: 26px 0 6px; position: relative; z-index: 2; }
+.hero__formats-lead { font-weight: 700; color: var(--ink); margin-bottom: 12px; font-size: 1.02rem; }
+.fmt-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 540px; }
+.fmt-card {
+  display: flex; flex-direction: column; gap: 5px; padding: 16px 18px;
+  border-radius: 18px; background: #fff; border: 1.5px solid var(--teal-100);
+  box-shadow: 0 10px 30px rgba(31, 138, 138, 0.10);
+  transition: transform .25s, box-shadow .25s, border-color .25s;
+}
+.fmt-card:hover { transform: translateY(-4px); box-shadow: 0 18px 46px rgba(31, 138, 138, 0.24); border-color: var(--teal-500); }
+.fmt-card__tag {
+  align-self: flex-start; font-size: .72rem; font-weight: 800; letter-spacing: .08em;
+  text-transform: uppercase; color: #fff; background: var(--teal-500);
+  padding: 3px 11px; border-radius: 999px;
+}
+.fmt-card__title { font-family: var(--font-display); font-size: 1.15rem; color: var(--ink); }
+.fmt-card__desc { font-size: .85rem; color: var(--grey-400); }
+.fmt-card--online { background: linear-gradient(135deg, var(--teal-700), var(--teal-500)); border-color: transparent; box-shadow: 0 14px 38px rgba(44, 177, 177, 0.32); }
+.fmt-card--online .fmt-card__title { color: #fff; }
+.fmt-card--online .fmt-card__desc { color: rgba(255, 255, 255, 0.85); }
+.fmt-card--online .fmt-card__tag { background: #fff; color: var(--teal-700); }
+@media (max-width: 600px) {
+  .fmt-cards { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; }
+  .hero__formats-lead { text-align: center; }
+}
