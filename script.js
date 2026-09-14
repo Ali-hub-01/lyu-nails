@@ -416,3 +416,91 @@ document.addEventListener('click', function (e) {
 
   updateParallax();
 })();
+
+/* ============================================================
+   Падающие звёзды с разноцветным светящимся хвостом (hero, canvas)
+   ============================================================ */
+(function shootingStars() {
+  var canvas = document.getElementById('heroShooting');
+  if (!canvas || prefersReducedMotion) return;
+  var ctx = canvas.getContext('2d');
+  var hero = document.getElementById('hero');
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var W = 0, H = 0, running = true, stars = [], lastSpawn = 0;
+
+  // палитра хвостов - разные цвета
+  var COLORS = [
+    [44, 177, 177],   // бирюза
+    [236, 110, 173],  // розовый
+    [150, 111, 214],  // фиолет
+    [240, 190, 90],   // золото
+    [90, 170, 240],   // голубой
+    [80, 200, 140]    // зелёный
+  ];
+
+  function resize() {
+    var r = canvas.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.width = Math.max(1, W * DPR);
+    canvas.height = Math.max(1, H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function spawn() {
+    var fromLeft = Math.random() < 0.5;
+    var angle = (Math.random() * 18 + 20) * Math.PI / 180; // 20-38 градусов вниз
+    var speed = Math.random() * 5 + 6;
+    var col = COLORS[(Math.random() * COLORS.length) | 0];
+    stars.push({
+      x: fromLeft ? -40 : W + 40,
+      y: Math.random() * H * 0.55,
+      vx: (fromLeft ? 1 : -1) * Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      len: Math.random() * 80 + 90,   // длина хвоста
+      life: 0, ttl: Math.random() * 60 + 90,
+      col: col, r: Math.random() * 1.2 + 1.3
+    });
+  }
+
+  function draw(now) {
+    if (running) {
+      ctx.clearRect(0, 0, W, H);
+      if (now - lastSpawn > (Math.random() * 900 + 700)) { spawn(); lastSpawn = now; }
+      for (var i = stars.length - 1; i >= 0; i--) {
+        var s = stars[i];
+        s.x += s.vx; s.y += s.vy; s.life++;
+        var fade = Math.min(1, s.life / 12) * Math.max(0, 1 - s.life / s.ttl);
+        // хвост - градиент от цвета к прозрачному
+        var tx = s.x - s.vx * (s.len / Math.hypot(s.vx, s.vy));
+        var ty = s.y - s.vy * (s.len / Math.hypot(s.vx, s.vy));
+        var g = ctx.createLinearGradient(s.x, s.y, tx, ty);
+        var c = s.col;
+        g.addColorStop(0, 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (0.9 * fade) + ')');
+        g.addColorStop(0.4, 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (0.35 * fade) + ')');
+        g.addColorStop(1, 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',0)');
+        ctx.strokeStyle = g;
+        ctx.lineWidth = s.r;
+        ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(tx, ty); ctx.stroke();
+        // головка звезды - яркая точка со свечением
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r * 1.6, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,' + fade + ')';
+        ctx.shadowColor = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + fade + ')';
+        ctx.shadowBlur = 14;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        if (s.life > s.ttl || s.x < -80 || s.x > W + 80 || s.y > H + 80) stars.splice(i, 1);
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  // пауза, когда hero вне экрана
+  if ('IntersectionObserver' in window && hero) {
+    new IntersectionObserver(function (en) { running = en[0].isIntersecting; }, { threshold: 0 }).observe(hero);
+  }
+  requestAnimationFrame(draw);
+})();
