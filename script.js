@@ -571,3 +571,28 @@ document.addEventListener('click', function (e) {
   }, { threshold: 0.35 });
   vids.forEach(function (v) { io.observe(v); });
 })();
+
+/* ============================================================
+   Hero: включить звук при ПЕРВОМ жесте пользователя.
+   (Браузеры не дают автозвук без действия - это максимум возможного.)
+   ============================================================ */
+(function heroSoundOnFirstGesture() {
+  var hv = document.getElementById('heroVideo');
+  if (!hv) return;
+  var btn = document.getElementById('heroUnmute');
+  var events = ['pointerdown', 'touchstart', 'keydown', 'click'];
+  function enable() {
+    if (hv.muted) {
+      hv.muted = false;
+      var p = hv.play(); if (p && p.catch) p.catch(function () {});
+      if (btn) {
+        btn.classList.add('is-on');
+        var i = btn.querySelector('.hero__unmute-ico'), t = btn.querySelector('.hero__unmute-txt');
+        if (i) i.textContent = '🔊';
+        if (t) t.textContent = 'Выключить звук';
+      }
+    }
+    events.forEach(function (ev) { window.removeEventListener(ev, enable); });
+  }
+  events.forEach(function (ev) { window.addEventListener(ev, enable, { passive: true }); });
+})();
