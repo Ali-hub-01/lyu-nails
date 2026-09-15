@@ -1033,7 +1033,7 @@ a.contact-card:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba
 .online-card {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(200px, 250px) 1.1fr 0.9fr;
+  grid-template-columns: 1.1fr 0.9fr;
   gap: clamp(24px, 3.2vw, 44px);
   background: rgba(255, 255, 255, 0.055);
   border: 1px solid rgba(127, 212, 212, 0.28);
@@ -1492,7 +1492,7 @@ body.is-loading { overflow: hidden; }
   .course-block--flagship,
   .course-block--upgrade { grid-template-columns: minmax(220px, 270px) 1fr; }
   .course-block--tech { grid-template-columns: 1fr minmax(210px, 250px); }
-  .online-card { grid-template-columns: minmax(200px, 240px) 1fr; }
+  .online-card { grid-template-columns: 1.1fr 0.9fr; }
   .online-card__side {
     grid-column: 1 / -1;
     border-left: none;
