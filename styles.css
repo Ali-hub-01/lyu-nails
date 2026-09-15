@@ -1368,3 +1368,38 @@ body.is-loading { overflow: hidden; }
   .fmt-cards { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; }
   .hero__formats-lead { text-align: center; }
 }
+
+/* ===== Прелоадер: полный логотип (белый на тёмном) ===== */
+.preloader__logo-img {
+  width: min(260px, 60vw); height: auto;
+  filter: brightness(0) invert(1) drop-shadow(0 8px 34px rgba(44, 177, 177, 0.55));
+}
+
+/* ===== Hero: видео вместо фото + кнопка звука ===== */
+.hero__photo-frame { position: relative; }
+.hero__video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero__unmute {
+  position: absolute; left: 14px; bottom: 14px; z-index: 3;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 15px; border-radius: 999px;
+  background: rgba(15, 43, 44, 0.62); color: #fff;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  font-size: 13px; font-weight: 600; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: background .2s, transform .2s;
+}
+.hero__unmute:hover { background: rgba(15, 43, 44, 0.85); transform: translateY(-2px); }
+.hero__unmute.is-on { background: var(--teal-700); }
+
+/* ===== Видео из студии / онлайн ===== */
+.studio-videos {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin: 6px 0 clamp(36px, 5vw, 56px);
+}
+.studio-video {
+  width: 100%; aspect-ratio: 9 / 16; object-fit: cover; display: block;
+  border-radius: var(--radius-md); background: #0f2b2c; cursor: pointer;
+  box-shadow: var(--shadow-card);
+}
+.online-video { max-width: 320px; margin: clamp(28px, 4vw, 40px) auto 0; }
+@media (max-width: 700px) { .studio-videos { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 460px) { .studio-videos { grid-template-columns: 1fr; max-width: 340px; margin-inline: auto; } }

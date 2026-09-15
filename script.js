@@ -450,7 +450,7 @@ document.addEventListener('click', function (e) {
 
   function spawn() {
     var fromLeft = Math.random() < 0.5;
-    var angle = (Math.random() * 18 + 20) * Math.PI / 180; // 20-38 градусов вниз
+    var angle = (Math.random() * 55 + 15) * Math.PI / 180; // 15-70 градусов - разный наклон, косо и непараллельно
     var speed = Math.random() * 6 + 7;
     var col = COLORS[(Math.random() * COLORS.length) | 0];
     stars.push({
@@ -511,4 +511,63 @@ document.addEventListener('click', function (e) {
     new IntersectionObserver(function (en) { running = en[0].isIntersecting; }, { threshold: 0 }).observe(hero);
   }
   requestAnimationFrame(draw);
+})();
+
+/* ============================================================
+   Видео: звук hero по кнопке + звук видео студии по клику
+   ============================================================ */
+(function videoSound() {
+  var hv = document.getElementById('heroVideo');
+  var btn = document.getElementById('heroUnmute');
+  var studio = Array.prototype.slice.call(document.querySelectorAll('.studio-video'));
+
+  function muteAllExcept(el) {
+    if (hv && hv !== el) hv.muted = true;
+    studio.forEach(function (v) { if (v !== el) v.muted = true; });
+    if (btn) { btn.classList.toggle('is-on', hv && !hv.muted); }
+  }
+
+  if (hv && btn) {
+    btn.addEventListener('click', function () {
+      if (hv.muted) {
+        hv.muted = false; muteAllExcept(hv);
+        var p = hv.play(); if (p && p.catch) p.catch(function () {});
+        btn.classList.add('is-on');
+        btn.querySelector('.hero__unmute-ico').textContent = '🔊';
+        btn.querySelector('.hero__unmute-txt').textContent = 'Выключить звук';
+      } else {
+        hv.muted = true;
+        btn.classList.remove('is-on');
+        btn.querySelector('.hero__unmute-ico').textContent = '🔈';
+        btn.querySelector('.hero__unmute-txt').textContent = 'Включить звук';
+      }
+    });
+  }
+
+  studio.forEach(function (v) {
+    v.addEventListener('click', function () {
+      if (v.muted) {
+        v.muted = false; muteAllExcept(v);
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      } else {
+        v.muted = true;
+      }
+    });
+  });
+})();
+
+/* ============================================================
+   Видео студии/онлайн: play/pause по видимости (экономия ресурсов)
+   ============================================================ */
+(function videoInView() {
+  var vids = document.querySelectorAll('.studio-video');
+  if (!vids.length || !('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      var v = en.target;
+      if (en.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+      else { v.pause(); }
+    });
+  }, { threshold: 0.35 });
+  vids.forEach(function (v) { io.observe(v); });
 })();
