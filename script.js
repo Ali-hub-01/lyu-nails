@@ -581,7 +581,10 @@ document.addEventListener('click', function (e) {
   if (!hv) return;
   var btn = document.getElementById('heroUnmute');
   var events = ['pointerdown', 'touchstart', 'keydown', 'click'];
-  function enable() {
+  function enable(e) {
+    // Нажатия по кнопке звука и по видео обрабатывают их собственные хендлеры - не вмешиваемся (иначе двойное срабатывание)
+    if (e && e.target && e.target.closest &&
+        (e.target.closest('#heroUnmute') || e.target.closest('.studio-video'))) return;
     if (hv.muted) {
       hv.muted = false;
       var p = hv.play(); if (p && p.catch) p.catch(function () {});
