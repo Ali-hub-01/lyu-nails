@@ -57,7 +57,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=9">
+  <link rel="stylesheet" href="styles.css?v=10">
   <noscript><style>.preloader { display: none; } body.is-loading { overflow: auto; }</style></noscript>
 </head>
 <body class="is-loading">
@@ -229,19 +229,19 @@
 
         <p class="kaspi-note reveal">💳 Любой курс - <b>в рассрочку 0–0–12</b> через <b>Kaspi Red</b></p>
 
-        <div class="studio-videos reveal" aria-label="Видео из студии">
-          <video class="studio-video" poster="assets/video/course-1-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Видео из студии, нажмите для звука">
-            <source src="assets/video/course-1.mp4" type="video/mp4">
-          </video>
-          <video class="studio-video" poster="assets/video/course-2-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Видео из студии, нажмите для звука">
-            <source src="assets/video/course-2.mp4" type="video/mp4">
-          </video>
-          <video class="studio-video" poster="assets/video/course-3-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Видео из студии, нажмите для звука">
-            <source src="assets/video/course-3.mp4" type="video/mp4">
-          </video>
-        </div>
+        <div class="courses__layout">
 
-        <div class="courses__grid">
+          <!-- ===== Блок 1: флагманские программы + видео занятий ===== -->
+          <div class="course-group">
+            <p class="course-group__tag reveal"><span class="course-group__dot" aria-hidden="true">◆</span>Флагманские программы</p>
+            <div class="course-block course-block--flagship">
+              <div class="video-frame course-block__media reveal">
+                <video class="studio-video" poster="assets/video/course-3-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Видео из студии, нажмите для звука">
+                  <source src="assets/video/course-3.mp4" type="video/mp4">
+                </video>
+                <span class="video-frame__chip"><span class="video-frame__dot" aria-hidden="true"></span>Занятия в студии</span>
+              </div>
+              <div class="course-block__cards">
 
           <!-- ФЛАГМАН -->
           <article class="course course--flagship reveal" id="course-expert">
@@ -271,7 +271,7 @@
           </article>
 
           <!-- 10 дней -->
-          <article class="course reveal" id="course-10day">
+          <article class="course course--wide reveal" id="course-10day">
             <div class="course__body">
               <h3 class="course__name">10-дневный курс</h3>
               <p class="course__desc">С нуля до уверенного результата. Дни 1-5 - натуральные ногти; дни 6-10 на выбор: эстетический педикюр или наращивание STRONG.</p>
@@ -287,6 +287,16 @@
               </div>
             </div>
           </article>
+
+              </div><!-- /course-block__cards -->
+            </div>
+          </div>
+
+          <!-- ===== Блок 2: техники наращивания и архитектура + видео практики ===== -->
+          <div class="course-group">
+            <p class="course-group__tag reveal"><span class="course-group__dot" aria-hidden="true">◆</span>Техники наращивания и архитектура</p>
+            <div class="course-block course-block--tech">
+              <div class="course-block__cards">
 
           <!-- STRONG -->
           <article class="course reveal" id="course-strong">
@@ -323,7 +333,7 @@
           </article>
 
           <!-- Архитектура -->
-          <article class="course reveal" id="course-architecture">
+          <article class="course course--wide reveal" id="course-architecture">
             <div class="course__body">
               <h3 class="course__name">Архитектура</h3>
               <p class="course__desc">Идеальный комби, боковые параллели, устранение отслоек, опил «квадрат» и «овал», рисованный френч.</p>
@@ -339,8 +349,29 @@
             </div>
           </article>
 
+              </div><!-- /course-block__cards -->
+              <div class="video-frame course-block__media reveal">
+                <video class="studio-video" poster="assets/video/course-2-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Видео из студии, нажмите для звука">
+                  <source src="assets/video/course-2.mp4" type="video/mp4">
+                </video>
+                <span class="video-frame__chip"><span class="video-frame__dot" aria-hidden="true"></span>Практика на моделях</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== Блок 3: интенсив за один день + видео атмосферы ===== -->
+          <div class="course-group">
+            <p class="course-group__tag reveal"><span class="course-group__dot" aria-hidden="true">◆</span>Интенсив для практикующих мастеров</p>
+            <div class="course-block course-block--upgrade">
+              <div class="video-frame course-block__media reveal">
+                <video class="studio-video" poster="assets/video/course-1-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Видео из студии, нажмите для звука">
+                  <source src="assets/video/course-1.mp4" type="video/mp4">
+                </video>
+                <span class="video-frame__chip"><span class="video-frame__dot" aria-hidden="true"></span>Атмосфера обучения</span>
+              </div>
+
           <!-- Повышение квалификации -->
-          <article class="course reveal" id="course-upgrade">
+          <article class="course course--wide reveal" id="course-upgrade">
             <div class="course__body">
               <h3 class="course__name">Повышение квалификации</h3>
               <p class="course__desc">Тонкое укрепление без утолщения, устранение причин отслоек, чистый комби-маникюр - за один день.</p>
@@ -355,6 +386,9 @@
               </div>
             </div>
           </article>
+
+            </div>
+          </div>
 
         </div>
       </div>
@@ -373,6 +407,13 @@
 
         <article class="online-card reveal" id="course-online">
           <span class="online-card__badge">Онлайн-формат</span>
+
+          <div class="video-frame online-card__media">
+            <video class="studio-video" poster="assets/video/online-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Видео об онлайн-курсе, нажмите для звука">
+              <source src="assets/video/online.mp4" type="video/mp4">
+            </video>
+            <span class="video-frame__chip"><span class="video-frame__dot" aria-hidden="true"></span>Фрагменты уроков</span>
+          </div>
 
           <div class="online-card__main">
             <h3 class="online-card__name">Онлайн-видеокурс</h3>
@@ -398,12 +439,6 @@
             <a href="https://wa.me/77026666135?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BA%20%D0%BE%D0%BD%D0%BB%D0%B0%D0%B9%D0%BD-%D0%BA%D1%83%D1%80%D1%81%D1%83%20LYU%20%28%D0%B7%D0%B0%D0%BA%D1%80%D1%8B%D1%82%D1%8B%D0%B9%20%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%D0%BA%D1%83%D1%80%D1%81%29." class="btn btn--solid btn--lg online-card__cta" target="_blank" rel="noopener">Получить доступ</a>
           </aside>
         </article>
-
-        <div class="online-video reveal" aria-label="Видео об онлайн-курсе">
-          <video class="studio-video" poster="assets/video/online-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Видео об онлайн-курсе, нажмите для звука">
-            <source src="assets/video/online.mp4" type="video/mp4">
-          </video>
-        </div>
       </div>
     </section>
 
@@ -582,6 +617,6 @@
     <button class="lightbox__arrow lightbox__arrow--next" id="lightboxNext" aria-label="Следующее фото">&#8250;</button>
   </div>
 
-  <script src="script.js?v=10"></script>
+  <script src="script.js?v=11"></script>
 </body>
 </html>
