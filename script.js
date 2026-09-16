@@ -580,22 +580,34 @@ document.addEventListener('click', function (e) {
   var hv = document.getElementById('heroVideo');
   if (!hv) return;
   var btn = document.getElementById('heroUnmute');
-  var events = ['pointerdown', 'touchstart', 'keydown', 'click'];
+  // Только 'click' (и 'keydown') - это ПРИНЯТЫЙ браузером жест для звука.
+  // pointerdown/touchstart срабатывают раньше click: снятие мьюта на них отклоняется
+  // и браузер ставит автоплей-видео на паузу. Поэтому их не используем.
+  var events = ['click', 'keydown'];
+
+  function setBtn(on) {
+    if (!btn) return;
+    btn.classList.toggle('is-on', on);
+    var i = btn.querySelector('.hero__unmute-ico'), t = btn.querySelector('.hero__unmute-txt');
+    if (i) i.textContent = on ? '🔊' : '🔈';
+    if (t) t.textContent = on ? 'Выключить звук' : 'Включить звук';
+  }
+
   function enable(e) {
-    // Нажатия по кнопке звука и по видео обрабатывают их собственные хендлеры - не вмешиваемся (иначе двойное срабатывание)
+    // Нажатия по кнопке звука и по видео студии обрабатывают их собственные хендлеры - не вмешиваемся (иначе двойное срабатывание)
     if (e && e.target && e.target.closest &&
         (e.target.closest('#heroUnmute') || e.target.closest('.studio-video'))) return;
-    if (hv.muted) {
-      hv.muted = false;
-      var p = hv.play(); if (p && p.catch) p.catch(function () {});
-      if (btn) {
-        btn.classList.add('is-on');
-        var i = btn.querySelector('.hero__unmute-ico'), t = btn.querySelector('.hero__unmute-txt');
-        if (i) i.textContent = '🔊';
-        if (t) t.textContent = 'Выключить звук';
-      }
-    }
+    // сработать один раз
     events.forEach(function (ev) { window.removeEventListener(ev, enable); });
+    if (!hv.muted) return;
+    hv.muted = false;
+    setBtn(true);
+    var p = hv.play();
+    if (p && p.catch) p.catch(function () {
+      // браузер не разрешил звук в этом жесте - возвращаем muted, чтобы видео НЕ вставало на паузу
+      hv.muted = true; setBtn(false);
+      var p2 = hv.play(); if (p2 && p2.catch) p2.catch(function () {});
+    });
   }
   events.forEach(function (ev) { window.addEventListener(ev, enable, { passive: true }); });
 })();
