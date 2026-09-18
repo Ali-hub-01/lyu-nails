@@ -273,8 +273,9 @@ bookingForm.addEventListener('submit', (e) => {
     'Меня зовут: ' + name + '\n' +
     'Телефон: ' + phone;
 
-  /* Конверсия Google Ads: "Отправка формы для потенциальных клиентов" */
-  fireConversion('AW-18415302041/7rV2COjgnfMcEJnrjM1E', 'form');
+  /* Конверсия Google Ads: "Отправка формы для потенциальных клиентов" + дубль в Telegram с деталями */
+  fireConversion('AW-18415302041/7rV2COjgnfMcEJnrjM1E', 'form',
+    '🎓 LYU-NAILS: новая заявка с сайта\nКурс: ' + course + '\nИмя: ' + name + '\nТелефон: ' + phone);
 
   window.open(
     'https://wa.me/' + WHATSAPP_PHONE + '?text=' + encodeURIComponent(text),
@@ -302,15 +303,37 @@ var lyuHumanSeen = false;
 });
 function lyuIsBot() { return !!navigator.webdriver || !lyuHumanSeen; }
 
-function fireConversion(sendTo, key) {
-  if (typeof gtag !== 'function') return;
+/* Telegram-дублирование конверсий (бот @lyu_nails_bot). Тот же анти-бот и дедуп,
+   что и у Google Ads: шлём в чат один раз за сессию на каждый тип действия. */
+var LYU_TG_TOKEN = '8493518445:AAEaoB9_wHzbj-2ppipxqSXVXrddLN-PsT0';
+var LYU_TG_CHAT = '469106806';
+var LYU_TG_MSG = {
+  tel: '📞 LYU-NAILS: клик по телефону',
+  wa: '💬 LYU-NAILS: клик по WhatsApp'
+};
+function notifyTelegram(text) {
+  if (!text) return;
+  try {
+    fetch('https://api.telegram.org/bot' + LYU_TG_TOKEN + '/sendMessage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: LYU_TG_CHAT, text: text, disable_web_page_preview: true }),
+      keepalive: true
+    }).catch(function () { /* тихо */ });
+  } catch (e) { /* тихо */ }
+}
+
+function fireConversion(sendTo, key, tgText) {
   if (lyuIsBot()) return;
   try {
     var k = 'lyu_conv_' + key;
     if (sessionStorage.getItem(k)) return;   // уже отправляли в этой сессии
     sessionStorage.setItem(k, '1');
   } catch (e) { /* приватный режим */ }
-  gtag('event', 'conversion', { 'send_to': sendTo, 'value': 1.0, 'currency': 'USD' });
+  if (typeof gtag === 'function') {
+    gtag('event', 'conversion', { 'send_to': sendTo, 'value': 1.0, 'currency': 'USD' });
+  }
+  notifyTelegram(tgText || LYU_TG_MSG[key]);   // дубль в Telegram
 }
 
 document.addEventListener('click', function (e) {
