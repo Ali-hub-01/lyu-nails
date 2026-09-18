@@ -1527,3 +1527,81 @@ body.is-loading { overflow: hidden; }
   .video-frame__dot { animation: none; }
   .video-frame:hover { transform: none; }
 }
+
+/* ============================================================
+   Модалка сбора номера перед WhatsApp
+   ============================================================ */
+.lead-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.lead-modal.is-open { opacity: 1; visibility: visible; pointer-events: auto; }
+.lead-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 34, 34, 0.55);
+  backdrop-filter: blur(4px);
+}
+.lead-modal__card {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 34px 28px 26px;
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lead-modal.is-open .lead-modal__card { transform: translateY(0) scale(1); }
+.lead-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: var(--grey-100);
+  color: var(--ink);
+  border-radius: 50%;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.lead-modal__close:hover { background: var(--teal-100); }
+.lead-modal__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 26px;
+  color: var(--teal-700);
+  margin: 0 0 4px;
+}
+.lead-modal__sub {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--grey-400);
+  margin: 0 0 20px;
+}
+.lead-modal__form .field { margin-bottom: 14px; }
+.lead-modal__submit { width: 100%; margin-top: 4px; }
+.lead-modal__note {
+  font-size: 12px;
+  color: var(--grey-400);
+  text-align: center;
+  margin: 14px 0 0;
+  line-height: 1.4;
+}
+@media (max-width: 600px) {
+  .lead-modal__card { padding: 30px 20px 22px; border-radius: var(--radius-md); }
+  .lead-modal__title { font-size: 23px; }
+}

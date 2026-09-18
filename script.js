@@ -273,8 +273,8 @@ bookingForm.addEventListener('submit', (e) => {
     'Меня зовут: ' + name + '\n' +
     'Телефон: ' + phone;
 
-  /* Конверсия Google Ads: "Отправка формы для потенциальных клиентов" + дубль в Telegram с деталями */
-  fireConversion('AW-18415302041/7rV2COjgnfMcEJnrjM1E', 'form',
+  /* Лид: конверсия Google Ads "Отправка формы" + заявка в Telegram (каждая) */
+  fireLead('AW-18415302041/7rV2COjgnfMcEJnrjM1E',
     '🎓 LYU-NAILS: новая заявка с сайта\nКурс: ' + course + '\nИмя: ' + name + '\nТелефон: ' + phone);
 
   window.open(
@@ -307,10 +307,6 @@ function lyuIsBot() { return !!navigator.webdriver || !lyuHumanSeen; }
    что и у Google Ads: шлём в чат один раз за сессию на каждый тип действия. */
 var LYU_TG_TOKEN = '8493518445:AAEaoB9_wHzbj-2ppipxqSXVXrddLN-PsT0';
 var LYU_TG_CHAT = '469106806';
-var LYU_TG_MSG = {
-  tel: '📞 LYU-NAILS: клик по телефону',
-  wa: '💬 LYU-NAILS: клик по WhatsApp'
-};
 function notifyTelegram(text) {
   if (!text) return;
   try {
@@ -323,29 +319,36 @@ function notifyTelegram(text) {
   } catch (e) { /* тихо */ }
 }
 
-function fireConversion(sendTo, key, tgText) {
-  if (lyuIsBot()) return;
+/* Google Ads конверсия: 1 раз за сессию на тип, анти-бот. Возвращает true если засчитали. */
+function adsConvOnce(sendTo, key) {
+  if (lyuIsBot()) return false;
   try {
     var k = 'lyu_conv_' + key;
-    if (sessionStorage.getItem(k)) return;   // уже отправляли в этой сессии
+    if (sessionStorage.getItem(k)) return false;   // уже отправляли в этой сессии
     sessionStorage.setItem(k, '1');
-  } catch (e) { /* приватный режим */ }
+  } catch (e) { /* приватный режим - всё равно засчитываем ниже */ }
   if (typeof gtag === 'function') {
     gtag('event', 'conversion', { 'send_to': sendTo, 'value': 1.0, 'currency': 'USD' });
   }
-  notifyTelegram(tgText || LYU_TG_MSG[key]);   // дубль в Telegram
+  return true;
+}
+
+/* Лид (форма/модалка сбора номера): конверсию в Google Ads дедупим 1/сессия,
+   а В TELEGRAM шлём КАЖДУЮ заявку - номер клиента не теряем ни разу. */
+function fireLead(sendTo, tgText) {
+  if (lyuIsBot()) return;              // защита от headless-ботов
+  adsConvOnce(sendTo, 'form');
+  notifyTelegram(tgText);
 }
 
 document.addEventListener('click', function (e) {
   if (!e.isTrusted) return;                   // синтетический клик бота, игнор
-  var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me"]');
+  var a = e.target.closest && e.target.closest('a[href^="tel:"]');
   if (!a) return;
-  var href = a.getAttribute('href') || '';
-  if (href.indexOf('tel:') === 0) {
-    fireConversion('AW-18415302041/uMWFCJWWlfMcEJnrjM1E', 'tel');       // Интерактивные номера телефонов
-  } else if (href.indexOf('wa.me') !== -1) {
-    fireConversion('AW-18415302041/Zr2UCJDfnfMcEJnrjM1E', 'wa');        // Контакт (WhatsApp)
+  if (adsConvOnce('AW-18415302041/uMWFCJWWlfMcEJnrjM1E', 'tel')) {      // Интерактивные номера телефонов
+    notifyTelegram('📞 LYU-NAILS: клик по телефону');
   }
+  // Клики по wa.me перехватывает модалка сбора номера (см. leadCapture ниже)
 });
 
 /* ============================================================
@@ -633,4 +636,104 @@ document.addEventListener('click', function (e) {
     });
   }
   events.forEach(function (ev) { window.addEventListener(ev, enable, { passive: true }); });
+})();
+
+/* ============================================================
+   Сбор номера ПЕРЕД переходом в WhatsApp (модалка).
+   Все ссылки wa.me перехватываются: открываем окошко имя+телефон,
+   фиксируем лид (конверсия Google Ads + заявка в Telegram), и только
+   потом открываем WhatsApp с готовым текстом + подставленными именем/тел.
+   Так номер клиента сохраняется, даже если он не отправит сообщение.
+   ============================================================ */
+(function leadCapture() {
+  var modal = document.getElementById('leadModal');
+  if (!modal) return;
+  var form = document.getElementById('leadModalForm');
+  var nameI = document.getElementById('leadName');
+  var phoneI = document.getElementById('leadPhone');
+  var subEl = document.getElementById('leadModalSub');
+  var nameErr = document.getElementById('leadNameErr');
+  var phoneErr = document.getElementById('leadPhoneErr');
+  var pendingUrl = null, pendingLabel = '', lastFocus = null;
+
+  function labelFromText(t) {
+    if (!t) return 'Запись на обучение';
+    var m = t.match(/курс[:\s]+([^\n]+)/i);
+    if (m) return 'Курс: ' + m[1].trim();
+    if (/онлайн/i.test(t)) return 'Онлайн-видеокурс';
+    return 'Запись на обучение';
+  }
+
+  function openModal(url) {
+    pendingUrl = url;
+    var ctx = '';
+    var m = (url || '').match(/[?&]text=([^&]*)/);
+    if (m) { try { ctx = decodeURIComponent(m[1].replace(/\+/g, ' ')); } catch (e) {} }
+    pendingLabel = labelFromText(ctx);
+    subEl.textContent = pendingLabel;
+    nameI.value = ''; phoneI.value = '';
+    nameErr.textContent = ''; phoneErr.textContent = '';
+    nameI.classList.remove('is-invalid'); phoneI.classList.remove('is-invalid');
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    lastFocus = document.activeElement;
+    setTimeout(function () { nameI.focus(); }, 60);
+  }
+
+  function closeModal() {
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch (e) {} }
+  }
+
+  /* Перехват всех кликов по wa.me (капча-фаза: открываем модалку вместо перехода) */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href*="wa.me"]');
+    if (!a) return;
+    e.preventDefault();
+    openModal(a.getAttribute('href') || '');
+  });
+
+  /* Закрытие */
+  modal.addEventListener('click', function (e) {
+    if (e.target.hasAttribute && e.target.hasAttribute('data-lead-close')) closeModal();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+  });
+
+  /* Отправка: фиксируем лид -> открываем WhatsApp */
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = nameI.value.trim();
+    var phone = phoneI.value.trim();
+    var digits = phone.replace(/\D/g, '');
+    var ok = true;
+    if (name.length < 2) { nameErr.textContent = 'Введите имя'; nameI.classList.add('is-invalid'); ok = false; }
+    else { nameErr.textContent = ''; nameI.classList.remove('is-invalid'); }
+    if (digits.length < 10) { phoneErr.textContent = 'Введите номер телефона'; phoneI.classList.add('is-invalid'); ok = false; }
+    else { phoneErr.textContent = ''; phoneI.classList.remove('is-invalid'); }
+    if (!ok) return;
+
+    /* Лид: конверсия Google Ads + заявка в Telegram (каждая, номер не теряем) */
+    fireLead('AW-18415302041/7rV2COjgnfMcEJnrjM1E',
+      '🎓 LYU-NAILS: новая заявка с сайта\n' + pendingLabel + '\nИмя: ' + name + '\nТелефон: ' + phone);
+
+    /* Собираем WhatsApp-ссылку: дописываем имя+телефон к готовому тексту */
+    var url = pendingUrl || 'https://wa.me/77026666135';
+    var extra = '\nИмя: ' + name + '\nТелефон: ' + phone;
+    if (/[?&]text=/.test(url)) {
+      url = url.replace(/([?&]text=)([^&]*)/, function (_, p, val) {
+        var cur = '';
+        try { cur = decodeURIComponent(val.replace(/\+/g, ' ')); } catch (e) { cur = ''; }
+        return p + encodeURIComponent(cur + extra);
+      });
+    } else {
+      url += (url.indexOf('?') > -1 ? '&' : '?') + 'text=' + encodeURIComponent('Здравствуйте! Хочу записаться.' + extra);
+    }
+    closeModal();
+    window.open(url, '_blank', 'noopener');
+  });
 })();

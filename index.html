@@ -57,7 +57,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=14">
   <noscript><style>.preloader { display: none; } body.is-loading { overflow: auto; }</style></noscript>
 </head>
 <body class="is-loading">
@@ -549,7 +549,7 @@
             <span class="contact-card__value">+7 702 666 6135</span>
           </a>
 
-          <a class="contact-card reveal" href="tel:+77026666135" onclick="return gtag_report_conversion('tel:+77026666135');">
+          <a class="contact-card reveal" href="tel:+77026666135">
             <span class="contact-card__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.6c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.4 2.2Z"/></svg>
             </span>
@@ -610,6 +610,28 @@
     <button class="lightbox__arrow lightbox__arrow--next" id="lightboxNext" aria-label="Следующее фото">&#8250;</button>
   </div>
 
-  <script src="script.js?v=14"></script>
+  <!-- Модалка: сбор номера перед переходом в WhatsApp -->
+  <div class="lead-modal" id="leadModal" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle" aria-hidden="true">
+    <div class="lead-modal__overlay" data-lead-close></div>
+    <div class="lead-modal__card" role="document">
+      <button class="lead-modal__close" type="button" data-lead-close aria-label="Закрыть">&times;</button>
+      <h3 class="lead-modal__title" id="leadModalTitle">Записаться на курс</h3>
+      <p class="lead-modal__sub" id="leadModalSub"></p>
+      <form class="lead-modal__form" id="leadModalForm" novalidate>
+        <div class="field">
+          <input class="field__input" id="leadName" name="name" type="text" placeholder="Ваше имя" autocomplete="name">
+          <span class="field__error" id="leadNameErr" aria-live="polite"></span>
+        </div>
+        <div class="field">
+          <input class="field__input" id="leadPhone" name="phone" type="tel" inputmode="tel" placeholder="+7 ___ ___ __ __" autocomplete="tel">
+          <span class="field__error" id="leadPhoneErr" aria-live="polite"></span>
+        </div>
+        <button class="btn btn--solid btn--lg lead-modal__submit" type="submit">Записаться в WhatsApp</button>
+        <p class="lead-modal__note">Оставьте номер - мы запишем вас, даже если не успеете написать в WhatsApp.</p>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js?v=15"></script>
 </body>
 </html>
